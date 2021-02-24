@@ -7,6 +7,9 @@ RUN apt update && apt upgrade -y && apt install -y \
         ca-certificates \
         curl \
         git \
+        rsync \
+        openssh-client \
+        build-essential \
         gnupg2 \
         software-properties-common \
         python3 \
