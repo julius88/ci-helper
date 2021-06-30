@@ -1,6 +1,6 @@
 FROM debian:buster
 
-ENV DOCKER_VERSION="19.03"
+ARG DOCKER_VERSION
 
 RUN apt update && apt upgrade -y && apt install -y \
         apt-transport-https \
@@ -24,7 +24,7 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
     add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
     apt update && \
     apt install -y \
-        docker-ce-cli=$(apt-cache policy docker-ce-cli | grep ${DOCKER_VERSION} | head -n1 | awk '{$1=$1};1' | cut -d " " -f1)
+        docker-ce-cli=$(apt-cache madison docker-ce-cli | grep ${DOCKER_VERSION} | head -n1 | awk '{print $3}')
 
 RUN mkdir -p ~/.docker/cli-plugins && \
     curl -s https://api.github.com/repos/docker/buildx/releases/latest | \
@@ -39,5 +39,7 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
 
 RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.3/kustomize_v4.1.3_linux_$(dpkg --print-architecture).tar.gz && \
     tar -xzvf kustomize_v4.1.3_linux_$(dpkg --print-architecture).tar.gz -C /usr/bin/
+
+RUN wget https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_$(dpkg --print-architecture) -O /usr/bin/yq && chmod +x /usr/bin/yq
 
 RUN pip3 install awscli docker-compose
