@@ -11,5 +11,13 @@ build-local: ## Build Docker image and store it locally.
 
 
 build: ## Build Docker image and push it to Docker Hub.
-	docker buildx create --use
-	docker buildx build --build-arg DOCKER_VERSION=$(VERSION) --platform linux/amd64,linux/arm64 -t juliusleppala/ci-helper:$(VERSION) --push .
+	docker buildx create --name ci-helper || true
+	docker buildx use ci-helper
+	docker buildx build \
+    	--build-arg DOCKER_VERSION=$(VERSION) \
+    	--platform linux/amd64,linux/arm64 \
+    	--cache-from=type=registry,ref=juliusleppala/ci-helper:$(VERSION)-cache \
+    	--cache-to=type=registry,ref=juliusleppala/ci-helper:$(VERSION)-cache,mode=max \
+      	-t juliusleppala/ci-helper:$(VERSION) \
+      	--push \
+      	.

@@ -26,6 +26,9 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
     apt install -y \
         docker-ce-cli=$(apt-cache madison docker-ce-cli | grep ${DOCKER_VERSION} | head -n1 | awk '{print $3}')
 
+RUN pip3 install pip setuptools --upgrade && \
+    pip3 install awscli docker-compose
+
 RUN mkdir -p ~/.docker/cli-plugins && \
     curl -s https://api.github.com/repos/docker/buildx/releases/latest | \
         grep "browser_download_url.*linux-$(dpkg --print-architecture)" | cut -d : -f 2,3 | tr -d \" | \
@@ -37,9 +40,7 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
     apt update && \
     apt install -y kubectl
 
-RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.3/kustomize_v4.1.3_linux_$(dpkg --print-architecture).tar.gz && \
-    tar -xzvf kustomize_v4.1.3_linux_$(dpkg --print-architecture).tar.gz -C /usr/bin/
+RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.3.0/kustomize_v4.3.0_linux_$(dpkg --print-architecture).tar.gz && \
+    tar -xzvf kustomize_v4.3.0_linux_$(dpkg --print-architecture).tar.gz -C /usr/bin/
 
-RUN wget https://github.com/mikefarah/yq/releases/download/v4.9.3/yq_linux_$(dpkg --print-architecture) -O /usr/bin/yq && chmod +x /usr/bin/yq
-
-RUN pip3 install awscli docker-compose
+RUN wget https://github.com/mikefarah/yq/releases/download/v4.12.2/yq_linux_$(dpkg --print-architecture) -O /usr/bin/yq && chmod +x /usr/bin/yq
