@@ -29,8 +29,8 @@ RUN apt update && apt upgrade -y && apt install -y \
         docker-ce-cli=$(apt-cache madison docker-ce-cli | grep ${DOCKER_VERSION} | head -n1 | awk '{print $3}'); \
 
     # Install awscli and docker-compose.
-    pip3 install pip setuptools --upgrade -no-cache-dir && \
-    pip3 install awscli docker-compose -no-cache-dir; \
+    pip3 install pip setuptools --upgrade --no-cache-dir && \
+    pip3 install awscli docker-compose --no-cache-dir; \
 
     # Install buildx plugin for Docker.
     mkdir -p ~/.docker/cli-plugins && \
