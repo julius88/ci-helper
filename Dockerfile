@@ -1,6 +1,9 @@
 FROM python:3.9-slim-buster
 
 ARG DOCKER_VERSION
+ARG YQ_VERSION="4.23.1"
+ARG KUSTOMIZE_VERSION="4.5.3"
+ARG NODE_VERSION="12"
 
 # Install dependencies.
 RUN apt update && apt upgrade -y && apt install -y \
@@ -46,14 +49,14 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
     apt install -y kubectl
 
 # Install Kustomize.
-RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.4.0/kustomize_v4.4.0_linux_$(dpkg --print-architecture).tar.gz && \
-    tar -xzvf kustomize_v4.4.0_linux_$(dpkg --print-architecture).tar.gz -C /usr/bin/
+RUN wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_$(dpkg --print-architecture).tar.gz && \
+    tar -xzvf kustomize_v${KUSTOMIZE_VERSION}_linux_$(dpkg --print-architecture).tar.gz -C /usr/bin/
 
 # Install yq.
-RUN wget https://github.com/mikefarah/yq/releases/download/v4.13.3/yq_linux_$(dpkg --print-architecture) -O /usr/bin/yq && chmod +x /usr/bin/yq
+RUN wget https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_$(dpkg --print-architecture) -O /usr/bin/yq && chmod +x /usr/bin/yq
 
 # Install yarn.
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - && \
     apt-get install -y nodejs && \
     npm install --global yarn
 
