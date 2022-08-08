@@ -1,9 +1,9 @@
 FROM python:3.9-slim-buster
 
 ARG DOCKER_VERSION
-ARG YQ_VERSION="4.23.1"
-ARG KUSTOMIZE_VERSION="4.5.3"
-ARG NODE_VERSION="12"
+ARG YQ_VERSION="4.27.2"
+ARG KUSTOMIZE_VERSION="4.5.7"
+ARG NODE_VERSION="16"
 
 # Install dependencies.
 RUN apt update && apt upgrade -y && apt install -y \
