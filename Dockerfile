@@ -1,4 +1,4 @@
-FROM python:3.9-slim-bullseye
+FROM python:3.11-slim-bullseye
 
 ARG DOCKER_VERSION
 ARG YQ_VERSION="4.28.1"
